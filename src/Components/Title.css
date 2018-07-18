@@ -1,0 +1,20 @@
+.title {
+  text-align: center;
+  display: flex;
+  flex-flow: row nowrap;
+}
+.title h1 {
+  flex: 3;
+  transition: all 0.4s;
+}
+.title div {
+  text-align: center;
+  justify-content: center;
+  vertical-align: center;
+  flex: 1;
+  transition: all 0.4s;
+}
+.title div i {
+  position:relative;
+  top:calc(50% - 16px);
+}

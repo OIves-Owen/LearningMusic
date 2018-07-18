@@ -1,0 +1,37 @@
+.Tiles {
+  padding:0px;
+  margin:0px;
+  padding-top: 40px;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+  width:100%;
+}
+
+.Tile {
+  list-style:none;
+  justify-content: center;
+  text-align: center;
+  padding:15px;
+  margin:20px;
+  display: flex;
+  flex: 1;
+  flex-basis: 100px;
+  text-align: center;
+  box-shadow: 2px 2px 4px 0px black;
+  border: 1px solid black;
+  transition: all 0.4s;
+}
+.return {
+  transition: all 0.4s;
+}
+
+// For all tiles (manually enter number of tiles) change the colour gradually from first to last
+
+$elements: 12;
+$a: 255/$elements;
+@for $i from 0 to $elements {
+  .Tile:nth-child(#{$i + 1}) {
+     background: rgb($i*$a, 255-($i*$a), 100);
+  }
+}

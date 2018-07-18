@@ -1,0 +1,146 @@
+@font-face {
+  font-family: 'mainText';
+  src: '../../Fonts/Raleway-Light.ttf';
+  font-weight: 300;
+}
+
+body {
+  overflow: hidden;
+}
+
+.NotesContainer {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  height: 100vh;
+  transition: all 0.4s;
+}
+.textContainer {
+  margin:20px 0;
+  padding:0;
+  list-style: none;
+  text-align: center;
+  li {
+    font-size: 16px;
+    margin: 3px;
+  }
+}
+#boo {
+  svg {
+    position: relative;
+    top: 100px;
+  }
+}
+.mainText {
+  font-weight: 400;
+  font-family: 'Raleway', sans-serif;
+  transition: all 0.6s;
+  text-align: center;
+  font-size: 20px;
+  min-height: 1.25em;
+}
+.NotesPanel {
+  border-top: 3px solid rgb(100,100,100);
+  background: black;
+  position:absolute;
+  color:white;
+  width:100%;
+  height:180px;
+  bottom:0;
+  right:0;
+  transition: all 0.4s;
+  display: flex;
+  flex-wrap:  nowrap;
+  justify-content: center;
+  .reply {
+    margin: 15px;
+    vertical-align: middle;
+    height:150px;
+    max-width: 50%;
+    flex: 1;
+    display:inline-block;
+    justify-content: center;
+    transition: all 0.8s;
+    background: rgb(28, 182, 48);
+    border-radius: 10px;
+    box-shadow: 2px 2px 2px 2px rgb(20,60,20);
+    text-align: center;
+    h2 {
+      top: 37%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 25px;
+      transition: all 0.6s;
+      position:relative;
+      text-shadow: 1px 1px rgb(60,100,60);
+    }
+  }
+}
+@keyframes grow {
+  0% {transform: scale(0.5);}
+  100% {transform: scale(1);}
+}
+@keyframes float {
+  0%, 100%{transform: translateY(0px) rotateZ(2deg);}
+  50% {transform: translateY(3px) rotateZ(-2deg);}
+}
+@keyframes flutter {
+  0% {
+    transform: translateY(0px);
+  }
+  33% {
+    transform: translateX(30px);
+  }
+  67% {
+    transform: translateX(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+@keyframes gitter {
+  0% {
+    transform: translateX(0px) rotateZ(0);
+  }
+  25% {
+    transform: translateX(2px) rotateZ(2deg);
+  }
+  50% {
+    transform: translateX(-3px) rotateZ(-2deg);
+  }
+  75% {
+    transform: translateX(2px) rotateZ(2deg);
+  }
+  100% {
+    transform: translateX(0px) rotateZ(0deg);
+  }
+}
+.note {
+  width: 30px;
+  height: 83px;
+  margin-bottom: 13px;
+  margin-right: 5px;
+  display: inline-block;
+  &:before, &:after {
+}
+  &:before {
+    width: 31px;
+    background: black;
+    border-radius: 200%;
+    height: 21px;
+    top: 20px;
+    transform: rotate(-30deg);
+  }
+}
+
+.note1 {
+  &:after {
+    width: 31px - 6px;
+    background: white;
+    border-radius: 200%;
+    height: 21px - 10px;
+    bottom: -13px + 5px;
+    right: -1px + 3px;
+    transform: rotate(-30deg);
+  }
+}
