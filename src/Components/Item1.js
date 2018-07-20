@@ -34,7 +34,7 @@ class Item1 extends Component {
     // Read whether the user is on the Menu or not, if not then send the lessonName to the lesson class and render it.
       return (
         <div>
-          {this.state.value === 'Menu' ? (<Tiles opacity={this.state.opacity} ExitMenu={this.ExitMenu.bind(this)}/>) : ( <Lessons opacity={this.state.opacity} lesson={this.state.value}/> )}
+          {this.state.value === 'Menu' ? (<Tiles opacity={this.state.opacity} ExitMenu={this.ExitMenu.bind(this)}/>) : ( <Lessons updateProgress={this.props.updateProgress.bind(this)} opacity={this.state.opacity} lesson={this.state.value}/> )}
         </div>
     );
   }

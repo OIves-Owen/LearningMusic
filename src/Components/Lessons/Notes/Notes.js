@@ -46,14 +46,16 @@ class LessonNotes extends Component {
     super(props);
     this.sound = new Audio(Plonk1);
     this.childStave = React.createRef();
+    this.editState = this.editState.bind(this);
     this.state = {
       iterator: -1,
       auto: 0,
       panel: {opacity: 1, translate: [0,0,0], display: true, text: '', replies: [], replyOpacity: 0},
       reply: {animation: '', opacity: 1},
-      object1: {opacity: 0, translate: [0,0,0], display: false, size: [(window.innerWidth/2-150),130],width: 0},
-      object2: {opacity: 0, translate: [0,0,0], display: false, transition: 'all 1s',width:'100%', liTransition: ''},
+      object1: {opacity: 0, translate: ['-50px',0,0], display: false, size: [(window.innerWidth/3-100),130],width: 0},
+      object2: {opacity: 1, translate: [0,0,0], display: false, transition: 'all 1s',width:'100%', liTransition: ''},
       maintext: {opacity: 0, translate: [0,0,0], display: true, text: '', color: 'black', animation: ''},
+      pointer: {opacity: 0, translate: [0,0,0], color: 'black', size: '2x'},
       opacity: this.props.opacity,
       opacities: [],
       weights: [],
@@ -69,7 +71,7 @@ class LessonNotes extends Component {
       hoverstate: 0,
       interactable: true,
       progress: 0,
-      notes: [notes[10]],
+      notes: null,
       noteOriginal: notes,
       states: States,
     }
@@ -81,8 +83,14 @@ class LessonNotes extends Component {
     copy[par] = value;
     this.setState({[state]: copy});
   }
+  editState(state,par,value,callback){
+    let copy = {...this.state[state]};
+    copy[par] = value;
+    this.setState({[state]: copy},callback);
+  }
   componentDidMount(){
     setTimeout(() => this.handleClick(), 1000);
+    window.addEventListener("resize", this.forceUpdate);
   }
   startIterator(max, reps, delay, remainder){
     let total = 0;
@@ -109,92 +117,131 @@ class LessonNotes extends Component {
   autoclick(skipNum){
     this.setState({progress: this.state.progress + (skipNum)}, this.handleClick);
   }
+  changeMainText(string){
+    let addition = 0;
+    if(this.state.maintext.opacity === 1){
+      this.editState('maintext','opacity',0);
+      addition = 600;
+    }
+    setTimeout(() => this.editState('maintext','text',string), addition);
+    setTimeout(() => this.editState('maintext','opacity',1), addition+5);
+  }
+  //Triggered when user chooses a reply, simply plays the grow animation in reverse and removes replies
   reply(number){
     this.autoclick(number+1);
-    this.repliesOut();
-  }
-  repliesOut(){
     this.editState('panel','replyOpacity', 0);
     setTimeout(() => this.editState('panel','animation','grow ease 0.8s 1 reverse'), 50);
     setTimeout(() => this.editState('panel','replies',[]), 1000);
     setTimeout(() => this.editState('panel','animation',''), 900);
   }
-  type(string,delay,addDelay){
+  // A simple imitation of typing a string adds one character to the string every interval
+  type(string,duration,delay){
     let chars = string.split("");
+    let interval = duration/chars.length;
     let textArr = [];
     let texts = [];
+    let addition = 0;
+    if(this.state.maintext.opacity === 1){
+      this.editState('maintext','opacity',0);
+      addition = 600;
+    }
+    setTimeout(() => this.editState('maintext','text',''),addition);
+    setTimeout(() => this.editState('maintext','opacity',1),addition+5);
     for(let i = 0; i < string.length; i++){
       for(let j = 0; j <= i; j++){
         textArr.push(chars[j]);
       }
       texts[i] = textArr.join("");
-      setTimeout(() => this.editState('maintext','text',texts[i]),(delay*i)+addDelay);
+      setTimeout(() => this.editState('maintext','text',texts[i]),(interval*i)+delay+addition);
       textArr = [];
     }
   }
-  // Taking data from NotesStates, read and perform functions with data
+  // This atrocity takes the data from NotesStates.js and does a variety of stuff. Needs to sort the data better!
   handleClick(){
     console.log('current progress = ' + this.state.progress);
     let current = this.state.states[this.state.progress];
     if(this.state.auto > 0){
       this.setState({auto: this.state.auto - 1});
     }
+    this.props.updateProgress(this.state.progress/(this.state.states.length-1));
     for(let i = 0; i < current.length; i++){
-      if(current[i][0] === 'state-i'){
-        this.editState(current[i][1],current[i][2],current[i][3]);
-      } else if(current[i][0] === 'state-d') {
-        setTimeout( () => this.editState(current[i][1],current[i][2],current[i][3])
-        , current[i][4]);
-      } else if(current[i][0] === 'setState') {
-        this.setState({[current[i][1]]: current[i][2]});
-      } else if(current[i][0] === 'setState-d') {
-        setTimeout(() =>
-          {this.setState({[current[i][1]]: current[i][2]});}
-          ,current[i][3]);
-      } else if(current[i][0] === 'repliesIn') {
-        setTimeout(() => this.editState('panel','animation','grow ease 0.8s 1'), 20);
-        setTimeout(() => this.editState('panel','replyOpacity', 1), 50);
-        setTimeout(() => this.editState('panel','animation',''), 1000);
-      } else if(current[i][0] === 'repliesOut') {
-        this.repliesOut();
-      } else if(current[i][0] === 'type'){
-        this.type(current[i][1],current[i][2],current[i][3]);
-      } else if(current[i][0] === 'textpush') {
-        setTimeout(() =>
-          {this.state.notelist.push(current[i][1]);
-          this.forceUpdate();}
-        ,current[i][2]);
-      } else if(current[i][0] === 'text-clear') {
-        this.state.notelist = [];
-      } else if(current[i][0] === 'sound'){
-        this.sound.currentTime = 0;
-        this.sound.play();
-      } else if(current[i][0] === 'sound-vol'){
-        this.sound.volume = current[i][1];
-      } else if(current[i][0] === 'sound-d'){
-        setTimeout(() => {this.sound.currentTime = 0;
-        this.sound.play();},current[i][1]);
-      } else if(current[i][0] === 'sound-change') {
-        this.sound.src = this.state.sources[current[i][1]];
-      } else if(current[i][0] === 'note-i') {
-        this.state.notes.push(new StaveNote({auto_stem: true, clef: "treble", keys:[current[i][2]] ,duration: 'q'}));
-        this.childStave.current.componentDidMount();
-      } else if(current[i][0] === 'note-d'){
-        setTimeout( () => this.state.notes.push(new StaveNote({auto_stem: true, clef: "treble", keys: [current[i][2]], duration: "q"})), current[i][1]);
-        setTimeout( () => this.childStave.current.componentDidMount(), current[i][1]);
-      } else if(current[i][0] === 'note-clear'){
-        this.setState({notes: []});
-      } else if(current[i][0] === 'note-test'){
-        this.state.notes.push(new StaveNote({auto_stem: true, clef:"treble", keys:['c/4'], duration: 'q'}).addAccidental(0, new Accidental("##")));
-        this.childStave.current.componentDidMount();
-      } else if(current[i][0] === 'next'){
-        this.next();
-      } else if(current[i][0] === 'autonext'){
-        //console.log('autonext called');
-        this.setState({auto: this.state.auto + 1});
-        setTimeout(() => this.autoclick(current[i][1]), current[i][2]);
-      } else if(current[i][0] === 'startIterator'){
-        this.startIterator(current[i][1],current[i][2],current[i][3],current[i][4]);
+      switch(current[i][0]){
+        case('maintext'):
+          setTimeout(() => this.changeMainText(current[i][1]), current[i][2]);
+          break;
+        case('state-i'):
+          this.editState(current[i][1],current[i][2],current[i][3]);
+          break;
+        case('state-d'):
+          setTimeout( () => this.editState(current[i][1],current[i][2],current[i][3])
+          , current[i][4]);
+          break;
+        case('setState'):
+          this.setState({[current[i][1]]: current[i][2]});
+          break;
+        case('setState-d'):
+          setTimeout(() =>
+            {this.setState({[current[i][1]]: current[i][2]});}
+            ,current[i][3]);
+          break;
+        case('repliesIn'):
+          setTimeout(() => this.editState('panel','animation','grow ease 0.8s 1'), 20);
+          setTimeout(() => this.editState('panel','replyOpacity', 1), 50);
+          setTimeout(() => this.editState('panel','animation',''), 1000);
+          break;
+        case('type'):
+          this.type(current[i][1],current[i][2],current[i][3]);
+          break;
+        case('textpush'):
+          setTimeout(() =>
+            {this.state.notelist.push(current[i][1]);
+            this.forceUpdate();}
+          ,current[i][2]);
+          break;
+        case('text-clear'):
+          this.state.notelist = [];
+          break;
+        case('sound'):
+          this.sound.currentTime = 0;
+          this.sound.play();
+          break;
+        case('sound-vol'):
+          this.sound.volume = current[i][1];
+          break;
+        case('sound-d'):
+          setTimeout(() => {this.sound.currentTime = 0;
+          this.sound.play();},current[i][1]);
+          break;
+        case('sound-change'):
+          this.sound.src = this.state.sources[current[i][1]];
+          break;
+        case('note-i'):
+          this.state.notes.push(new StaveNote({auto_stem: true, clef: "treble", keys:[current[i][2]] ,duration: 'q'}));
+          this.childStave.current.componentDidMount();
+          break;
+        case('note-d'):
+          setTimeout( () => this.state.notes.push(new StaveNote({auto_stem: true, clef: "treble", keys: [current[i][2]], duration: "q"})), current[i][1]);
+          setTimeout( () => this.childStave.current.componentDidMount(), current[i][1]);
+          break;
+        case('note-clear'):
+          this.setState({notes: null});
+          setTimeout( () => this.childStave.current.componentDidMount(), 10);
+          break;
+        case('note-test'):
+          this.state.notes.push(new StaveNote({auto_stem: true, clef:"treble", keys:['c/4'], duration: 'q'}).addAccidental(0, new Accidental("##")));
+          this.childStave.current.componentDidMount();
+          break;
+        case('next'):
+          this.next();
+          break;
+        case('autonext'):
+          //console.log('autonext called');
+          this.setState({auto: this.state.auto + 1});
+          setTimeout(() => this.autoclick(current[i][1]), current[i][2]);
+          break;
+        case('startIterator'):
+          this.startIterator(current[i][1],current[i][2],current[i][3],current[i][4]);
+          break;
       }
     }
   }
@@ -227,12 +274,17 @@ class LessonNotes extends Component {
           <h3 style={{opacity: this.state.maintext.opacity, color: this.state.maintext.color, animation: this.state.maintext.animation}} className="mainText">{this.state.maintext.text}</h3>
         }
         { this.state.object2.display &&
-          <div style={{transform: 'translate3d('+this.state.object2.translate+')', transition: 'all 1s', display: 'inline-block', padding: 0, margin:0, display: 'flex'}}>
-            <ul style={{transition: this.state.object2.transition, flex: 1, opacity: this.state.object2.opacity}} className="textContainer">
-              {textlist}
-            </ul>
-            <div id="boo" style={{opacity: this.state.object1.opacity, transition: 'all 0.4s', width: this.state.object1.width, verticalAlign: 'middle'}}>
-                {this.state.object1.display && <Music size={this.state.object1.size} ref={this.childStave} notes={this.state.notes} clef={"treble"}/>}
+          <div>
+            <div style={{transform: 'translate3d('+this.state.object2.translate+')', transition: 'all 1s', display: 'inline-block', padding: 0, margin:0, display: 'flex'}}>
+              <ul style={{transition: this.state.object2.transition, flex: 1, opacity: this.state.object2.opacity}} className="textContainer">
+                {textlist}
+              </ul>
+              <div id="boo" style={{opacity: this.state.object1.opacity, transition: 'all 0.4s', width: this.state.object1.width, transform: 'translate3d('+this.state.object1.translate+')'}}>
+                  {this.state.object1.display && <Music size={this.state.object1.size} ref={this.childStave} notes={this.state.notes} clef={"treble"}/>}
+              </div>
+            </div>
+            <div className="pointerContainer" style={{opacity: this.state.pointer.opacity, transform: 'translate3d('+this.state.pointer.translate+')'}}>
+              <FontAwesomeIcon icon="arrow-up" size={this.state.pointer.size} color={this.state.pointer.color}/>
             </div>
           </div>
         }

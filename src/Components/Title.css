@@ -18,3 +18,23 @@
   position:relative;
   top:calc(50% - 16px);
 }
+.progressOuter {
+  margin: 5px auto;
+  margin-bottom: -10px;
+  width: 80vw;
+  height: 14px;
+  border-radius: 30px;
+  background: rgb(200, 200, 200);
+}
+.progressInner {
+  position:relative;
+  left: 4px;
+  top: 3px;
+  width: calc(80vw - 8px);
+  height: 8px;
+  border-radius: 30px;
+  background: rgb(100, 100, 250);
+}
+.TitleWhole {
+  display: block;
+}

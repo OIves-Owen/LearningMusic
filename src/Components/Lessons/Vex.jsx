@@ -34,25 +34,33 @@ export default class Music extends Component {
         </div>;
     }
     componentDidMount() {
-        let notes = this.props.notes;
-        let size = [(window.innerWidth/2-100), 150];
+        let size;
+        console.log(this.props.size);
         if(this.props.size){
           size = this.props.size;
+        } else {
+          size = [(window.innerWidth/2-100),130];
         }
-        console.log(notes);
-        this.state.notes = notes;
         let svgContainer = document.createElement("div");
         let renderer = new Renderer(svgContainer, Renderer.Backends.SVG);
         renderer.resize(size[0],size[1]);
         let ctx = renderer.getContext();
         let stave = new Stave(0, 0, size[0]);
         stave.addClef('treble');
-        let voice = new Voice({num_beats: 1,  beat_value: 4});
-        voice.addTickables(notes);
-        let formatter = new Formatter().joinVoices([voice]).format([voice], 50 * notes.length);
-        voice.draw(ctx, stave);
-        stave.setContext(ctx).draw();
-        this.refs.outer.innerHTML = "";
-        this.refs.outer.appendChild(svgContainer);
+        let notes = this.props.notes;
+        console.log(notes);
+        if(notes){
+            let voice = new Voice({num_beats: 1,  beat_value: 4});
+            voice.addTickables(notes);
+            let formatter = new Formatter().joinVoices([voice]).format([voice], 50 * notes.length);
+            voice.draw(ctx, stave);
+            stave.setContext(ctx).draw();
+            this.refs.outer.innerHTML = "";
+            this.refs.outer.appendChild(svgContainer);
+        } else if(notes === null) {
+            stave.setContext(ctx).draw();
+            this.refs.outer.innerHTML = "";
+            this.refs.outer.appendChild(svgContainer);
+        }
     }
 }

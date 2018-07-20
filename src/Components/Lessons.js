@@ -9,7 +9,7 @@ export default class Lessons extends Component {
   Output(state) {
     switch(state) {
         case 'Notes':
-            return <Notes opacity={this.props.opacity} />;
+            return <Notes updateProgress={this.props.updateProgress.bind(this)} opacity={this.props.opacity} />;
         case 'Clefs':
             return <Clefs opacity={this.props.opacity} />
         default:

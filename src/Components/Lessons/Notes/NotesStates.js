@@ -1,22 +1,18 @@
 const States = [
     [
       // State 0
-      ['state-i','maintext','text',"In Traditional Western Music, there are 12 notes:"],
-      ['state-d','maintext','opacity',1, 400],
+      ['maintext',"In Traditional Western Music, there are 12 notes",0],
       ['autonext',1,3000],
     ],
     [
       // State 1
-      ['state-d','maintext','text','made up of these...',600],
-      ['state-i','maintext','opacity',0],
-      ['state-d','maintext','opacity',1,600],
-      ['autonext',1,1200],
+      ['maintext','made up of these...',0],
+      ['autonext',1,3000],
     ],
     [
       //State 2
       ['sound'],
       ['state-i','object2','display',true],
-      ['state-d','object2','opacity',1, 50],
       ['setState','opacities',[1,0,1,1,0,1,0,1,1,0,1,0]],
       ['textpush','G#/Ab',0],
       ['textpush','G',5],
@@ -34,10 +30,8 @@ const States = [
     ],
     [
       //State 3
-      ['state-d','maintext','text','and these.',600],
-      ['state-i','maintext','opacity',0],
-      ['state-d','maintext','opacity',1,600],
-      ['autonext',1,1200],
+      ['maintext','...and these.',0],
+      ['autonext',1,2000],
     ],
     [
       //State 4
@@ -62,15 +56,12 @@ const States = [
       ['state-i','forward','opacity', 0],
       ['state-d','forward','opacity', 1, 400],
       ['state-d','panel','text','', 400],
-      ['state-i','maintext','opacity',0],
-      ['state-d','maintext','opacity',1,600],
-      ['state-d','maintext','color','blue',600],
-      ['state-d','maintext','text',"", 600],
-      ['state-d','maintext','animation','float 0.2s infinite',1200],
-      ['type','That happens to be my favourite number',40,1000],
-      ['state-d','maintext','opacity',0,3000],
-      ['state-d','maintext','animation','',4500],
-      ['autonext',2,5000]
+      ['state-d','maintext','color','blue',1000],
+      ['state-d','maintext','animation','float 1s infinite',1200],
+      ['type','That happens to be my favourite number',1500,400],
+      ['state-d','maintext','opacity',0,3400],
+      ['state-d','maintext','animation','',4000],
+      ['autonext',2,4000]
     ],
     [
       //State 7
@@ -85,16 +76,15 @@ const States = [
       ['state-d','maintext','color','red',600],
       ['state-d','maintext','text',"", 600],
       ['state-d','maintext','animation','gitter 0.2s infinite',1200],
-      ['type','What... Just Twelve!?',80,1000],
-      ['state-d','maintext','opacity',0,3000],
-      ['state-d','maintext','animation','',3600],
+      ['type','What... Just Twelve!?',1500,1000],
+      ['state-d','maintext','opacity',0,3400],
+      ['state-d','maintext','animation','',4000],
       ['autonext',2, 4000]
     ],
     [
       //State 8
-      ['state-i','maintext','opacity', 0],
       ['state-d','maintext','opacity', 1, 400],
-      ['state-d','maintext','color','black',400],
+      ['state-i','maintext','color','black'],
       ['type',"Hopefully that'll make it easier to rememeber!", 10, 410],
       ['state-i','object2','liTransition','all 1.5s'],
       ['state-d','object2','width','50%',200],
@@ -145,32 +135,80 @@ const States = [
       ['state-d','maintext','text','',800],
       ['state-d','maintext','opacity',1,1000],
       ['state-d','maintext','color','red',1050],
-      ['type',"Oi mate, what's that thing on the right?", 40, 1800],
-      ['state-d','maintext','animation','',4500],
-      ['autonext',2,5000]
+      ['type',"Oi mate, what's that thing on the right?", 1500, 1800],
+      ['state-d','maintext','animation','',5000],
+      ['autonext',4,5000]
     ],
     [
       // State 13
       ['sound-change','HighVoice3'],
       ['sound-d',1800],
-      ['state-d','maintext','animation','float 0.2s infinite',1800],
+      ['state-d','maintext','animation','float 1s infinite',1800],
       ['state-i','maintext','opacity',0],
       ['state-d','maintext','text','',800],
       ['state-d','maintext','opacity',1,1000],
-      ['state-d','maintext','color','purple',1050],
-      ['type',"Got it! Think we've pretty much covered this music stuff now", 30, 1800],
-      ['state-d','maintext','animation','',4500],
+      ['state-d','maintext','color','blue',1050],
+      ['type',"Got it! What's next?", 2500, 1800],
+      ['state-d','maintext','animation','',6000],
       ['autonext',1,6000]
     ],
     [
       // State 14
       ['state-i','maintext','opacity',0],
-      ['state-i','object1',''],
       ['state-i','object2','transition', 'all 1s'],
       ['state-d','object2','opacity',0,1000],
       ['state-d','object2','translate',['-25vw',0,0],1050],
+      ['state-d','object1','translate',[0,0,0],1050],
       ['state-d','object2','transition','',1800],
       ['state-d','object1','transition','',1800],
+      ['note-clear'],
+      ['autonext',1,3000],
     ],
+    [
+      // State 15
+      ['state-i','maintext','opacity',0],
+      ['state-d','maintext','color','black',600],
+      ['state-d','maintext','text','Well.. you should probably learn what this thing is',620],
+      ['state-d','maintext','opacity',1,630],
+      ['state-d','pointer','translate',[0,'-100px',0],2000],
+      ['state-d','pointer','opacity',1,2000],
+      ['autonext',3,5000]
+    ],
+    [
+      // State 16
+      ['state-i','maintext','opacity',0],
+      ['state-i','object2','transition', 'all 1s'],
+      ['state-d','object2','opacity',0,1000],
+      ['state-d','object2','translate',['-25vw',0,0],1050],
+      ['state-d','object1','translate',[0,0,0],1050],
+      ['state-d','object2','transition','',1800],
+      ['state-d','object1','transition','',1800],
+      ['note-clear'],
+      ['autonext',1,3000],
+    ],
+    [
+      // State 17
+      ['state-i','maintext','text','Oh this thing?'],
+      ['state-d','maintext','color','black',25],
+      ['state-d','maintext','opacity',1,50],
+      ['state-d','pointer','translate',[0,'-100px',0],2000],
+      ['state-d','pointer','opacity',1,2000],
+      ['autonext',1,3000]
+    ],
+    [
+      ['maintext','The horizontal lines are called the STAVE',0],
+      ['maintext','This is where you write musical notes',2000],
+      ['state-d','maintext','opacity',1,2620],
+      ['autonext',1,7000],
+    ],
+    [
+      ['state-i','maintext','opacity',0],
+      ['state-d','maintext','text','In order to know what the notes written on the stave mean, you need a clef!',600],
+      ['state-d','maintext','opacity',1,620],
+      ['state-d','pointer','translate',[16-((window.innerWidth/3-100)/2)+'px','-100px',0],700],
+      ['state-d','maintext','opacity',0,5000],
+      ['state-d','maintext','text',"This curvy one we've got is called a Treble Clef", 5600],
+      ['state-d','maintext','opacity',1,5620],
+    ]
 ];
 export { States };
