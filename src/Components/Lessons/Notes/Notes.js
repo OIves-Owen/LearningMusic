@@ -56,6 +56,14 @@ class LessonNotes extends Component {
       object2: {opacity: 1, translate: [0,0,0], display: false, transition: 'all 1s',width:'100%', liTransition: ''},
       maintext: {opacity: 0, translate: [0,0,0], display: true, text: '', color: 'black', animation: ''},
       pointer: {opacity: 0, translate: [0,0,0], color: 'black', size: '2x'},
+      reset: [
+        ['maintext','opacity',0],
+        ['object1','opacity',0],
+        ['object2','opacity',0],
+        ['pointer','pointer',0],
+        ['object2','translate',[0,0,0]],
+        ['object1','translate',[0,0,0]],
+      ],
       opacity: this.props.opacity,
       opacities: [],
       weights: [],
@@ -76,7 +84,12 @@ class LessonNotes extends Component {
       states: States,
     }
   }
-
+  reset(){
+    let reset = this.state.reset;
+    for(let i = 0; i < this.state.reset.length; i++){
+        setTimeout(() => this.editState(reset[i][0],reset[i][1],reset[i][2]), i*50);
+    }
+  }
   // state: State object to be changed, par: Object's Paramater, value: Value to change it to;
   editState(state,par,value){
     let copy = {...this.state[state]};
@@ -241,6 +254,9 @@ class LessonNotes extends Component {
           break;
         case('startIterator'):
           this.startIterator(current[i][1],current[i][2],current[i][3],current[i][4]);
+          break;
+        case('reset'):
+          this.reset();
           break;
       }
     }
