@@ -12,8 +12,8 @@
   list-style:none;
   justify-content: center;
   text-align: center;
-  padding:15px;
-  margin:20px;
+  padding:20px;
+  margin:15px;
   display: flex;
   flex: 1;
   flex-basis: 100px;
@@ -21,6 +21,11 @@
   box-shadow: 2px 2px 4px 0px black;
   border: 1px solid black;
   transition: all 0.4s;
+  font-weight: bold;
+  color: white;
+  font-size: 20px;
+  text-shadow: 1px 1px 3px black, 0 0 10px black;
+  text-transform: capitalize;
 }
 .return {
   transition: all 0.4s;

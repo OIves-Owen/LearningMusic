@@ -20,20 +20,34 @@
 }
 .progressOuter {
   margin: 5px auto;
+  margin-top: 10px;
   margin-bottom: -10px;
   width: 80vw;
   height: 14px;
   border-radius: 30px;
-  background: rgb(200, 200, 200);
+  background: rgb(230, 230, 230);
+  box-shadow: 2px 2px 10px black;
+}
+.innerPlaceholder {
+  position:relative;
+  left: 4px;
+  top: 4px;
+  border-radius: 30px;
+  width: calc(80vw - 8px);
+  height: 6px;
+  background: rgb(100, 100, 100);
 }
 .progressInner {
   position:relative;
   left: 4px;
-  top: 3px;
+  top: -2px;
   width: calc(80vw - 8px);
-  height: 8px;
+  height: 6px;
   border-radius: 30px;
-  background: rgb(100, 100, 250);
+  border-top-right-radius: 1px;
+  border-bottom-right-radius: 1px;
+  background: rgb(250, 200, 50);
+  transition: all 1s;
 }
 .TitleWhole {
   display: block;

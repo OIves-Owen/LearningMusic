@@ -11,9 +11,14 @@ import HighVoice3 from '../../Audio/HighVoice4.mp3';
 import LowVoice1 from '../../Audio/LowVoice1.mp3';
 import LowVoice2 from '../../Audio/LowVoice2.mp3';
 import ChromRun1 from '../../Audio/ChromRun1.mp3';
+import Tadaa from '../../Audio/Tadaa.mp3';
+import Wrong from '../../Audio/Wrong.mp3';
+import Right from '../../Audio/Right.mp3';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const {Accidental, StaveNote, Voice, TextNote} = Vex.Flow;
 const green = 'rgb(28, 182, 48)';
+const replyGreen = 'rgba(28,182,48,0.7)';
+const replyRed = 'rgba(182,28,48,0.7)';
 let notes = [
   new StaveNote({clef: "treble", keys: ["a/3"], duration: "q"}),
   new StaveNote({clef: "treble", keys: ["b/3"], duration: "q"}).addAccidental(0, new Accidental("b")),
@@ -50,9 +55,9 @@ class LessonNotes extends Component {
     this.state = {
       iterator: -1,
       auto: 0,
-      panel: {opacity: 1, translate: [0,0,0], display: true, text: '', replies: [], replyOpacity: 0},
+      panel: {opacity: 1, translate: [0,0,0], display: true, text: '', replies: [], replyOpacity: 0, replyColor: []},
       reply: {animation: '', opacity: 1},
-      object1: {opacity: 0, translate: ['-50px',0,0], display: false, size: [(window.innerWidth/3-100),130],width: 0},
+      object1: {opacity: 0, translate: ['-50px',0,0], display: false, size: [(window.innerWidth/3-60),130],width: '50%'},
       object2: {opacity: 1, translate: [0,0,0], display: false, transition: 'all 1s',width:'100%', liTransition: ''},
       maintext: {opacity: 0, translate: [0,0,0], display: true, text: '', color: 'black', animation: ''},
       pointer: {opacity: 0, translate: [0,0,0], color: 'black', size: '2x'},
@@ -60,7 +65,7 @@ class LessonNotes extends Component {
         ['maintext','opacity',0],
         ['object1','opacity',0],
         ['object2','opacity',0],
-        ['pointer','pointer',0],
+        ['pointer','opacity',0],
         ['object2','translate',[0,0,0]],
         ['object1','translate',[0,0,0]],
       ],
@@ -74,11 +79,14 @@ class LessonNotes extends Component {
                 LowVoice1: LowVoice1,
                 LowVoice2: LowVoice2,
                 HighVoice1: HighVoice1,
-                HighVoice3: HighVoice3},
+                HighVoice3: HighVoice3,
+                Tadaa: Tadaa,
+                Wrong: Wrong,
+                Right: Right},
       notelist: [],
       hoverstate: 0,
       interactable: true,
-      progress: 0,
+      progress: 20,
       notes: null,
       noteOriginal: notes,
       states: States,
@@ -87,7 +95,7 @@ class LessonNotes extends Component {
   reset(){
     let reset = this.state.reset;
     for(let i = 0; i < this.state.reset.length; i++){
-        setTimeout(() => this.editState(reset[i][0],reset[i][1],reset[i][2]), i*50);
+        setTimeout(() => this.editState(reset[i][0],reset[i][1],reset[i][2]), i*10);
     }
   }
   // state: State object to be changed, par: Object's Paramater, value: Value to change it to;
@@ -112,7 +120,6 @@ class LessonNotes extends Component {
       for(let i = 0; i < max; i++){
         setTimeout(() => {
           this.setState({iterator: i});
-          console.log('loop: ' + (i+(j*max)));
           this.setState({notes: [notes[total]]});
           setTimeout( () => this.childStave.current.componentDidMount(), 10);
           total++;
@@ -130,13 +137,28 @@ class LessonNotes extends Component {
   autoclick(skipNum){
     this.setState({progress: this.state.progress + (skipNum)}, this.handleClick);
   }
-  changeMainText(string){
+  quiz(question,answers){
+    let colors = [];
+    for(let i = 0; i<answers.length; i++) {
+      colors.push('rgb(250, 200, 50)');
+    }
+    this.changeMainText(question);
+    this.editState('panel','replies',answers);
+    setTimeout(() => this.editState('panel','replyColor',colors),50);
+    setTimeout(() => this.repliesIn(), 1000);
+  }
+  repliesIn(){
+    setTimeout(() => this.editState('panel','animation','grow ease 0.8s 1'), 20);
+    setTimeout(() => this.editState('panel','replyOpacity', 1), 50);
+  }
+  changeMainText(string, color){
     let addition = 0;
     if(this.state.maintext.opacity === 1){
       this.editState('maintext','opacity',0);
       addition = 600;
     }
     setTimeout(() => this.editState('maintext','text',string), addition);
+    setTimeout(() => this.editState('maintext','color',color),addition);
     setTimeout(() => this.editState('maintext','opacity',1), addition+5);
   }
   //Triggered when user chooses a reply, simply plays the grow animation in reverse and removes replies
@@ -180,7 +202,11 @@ class LessonNotes extends Component {
     for(let i = 0; i < current.length; i++){
       switch(current[i][0]){
         case('maintext'):
-          setTimeout(() => this.changeMainText(current[i][1]), current[i][2]);
+          if(current[i].length === 3){
+            setTimeout(() => this.changeMainText(current[i][1]),current[i][2]);
+          } else {
+            setTimeout(() => this.changeMainText(current[i][1],current[i][2]),current[i][3]);
+          }
           break;
         case('state-i'):
           this.editState(current[i][1],current[i][2],current[i][3]);
@@ -198,9 +224,7 @@ class LessonNotes extends Component {
             ,current[i][3]);
           break;
         case('repliesIn'):
-          setTimeout(() => this.editState('panel','animation','grow ease 0.8s 1'), 20);
-          setTimeout(() => this.editState('panel','replyOpacity', 1), 50);
-          setTimeout(() => this.editState('panel','animation',''), 1000);
+            this.repliesIn();
           break;
         case('type'):
           this.type(current[i][1],current[i][2],current[i][3]);
@@ -258,6 +282,9 @@ class LessonNotes extends Component {
         case('reset'):
           this.reset();
           break;
+        case('quiz'):
+          this.quiz(current[i][1],current[i][2]);
+          break;
       }
     }
   }
@@ -282,7 +309,7 @@ class LessonNotes extends Component {
     }
     let panel = [];
     for(let i = 0; i < this.state.panel.replies.length; i++){
-      panel.push(<div style={{opacity: this.state.panel.replyOpacity, animation: this.state.panel.animation}} key={'reply'+i} onClick={this.reply.bind(this,i)} className="reply"><h2>{this.state.panel.replies[i]}</h2></div>);
+      panel.push(<div style={{opacity: this.state.panel.replyOpacity, animation: this.state.panel.animation, animationDelay: '2s', background: this.state.panel.replyColor[i]}} key={'reply'+i} onClick={this.reply.bind(this,i)} className="reply"><h2>{this.state.panel.replies[i]}</h2></div>);
     }
     return(
       <div style={{opacity: this.props.opacity}} className="NotesContainer">

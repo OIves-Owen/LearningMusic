@@ -16,7 +16,7 @@ class App extends React.Component {
       Item1isMenu: true,
       titleleft: '',
       titleright: '',
-      title: 'Music App',
+      title: 'Intuitive Music',
       offx: 0,
       offy: 0
     }

@@ -22,7 +22,7 @@ class Item1 extends Component {
   }
   EnterMenu() {
     this.setState({opacity: 0});
-    this.props.ExitMenu('Music App');
+    this.props.ExitMenu('Intuitive Music');
     setTimeout(function() {
       this.setState({value: 'Menu'})}.bind(this)
     , 800);

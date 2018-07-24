@@ -18,16 +18,18 @@ class Title extends Component {
     }
     return (
       <div className="TitleWhole">
-        { this.props.ProgressBar &&
+        { this.props.ProgressBar ? (
           <div className="progressOuter" style={this.props.opacity}>
+            <div className="innerPlaceholder"></div>
             <div className="progressInner" style={{width: this.props.progressPercent*98+'%'}}></div>
           </div>
-        }
+        ) : (
         <div className="title">
           <div style={hidel} ><i onClick={this.props.goHome.bind(this)} className={this.props.iconleft}/></div>
           <h1 style={hide}>{this.props.title}</h1>
           <div><i className={this.props.iconright}/></div>
         </div>
+      )}
       </div>
     );
   }
