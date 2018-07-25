@@ -1,7 +1,8 @@
-const replyGreen = 'rgba(100,150,100,0.8)';
-const replyRed = 'rgba(150,100,100,0.8)';
-const replyBlue = 'rgba(100,100,150,0.8)';
-
+const replyGreen = '#FF101F';
+//const replyRed = 'rgba(150,100,100,0.8)';
+//const replyBlue = 'rgba(100,100,150,0.8)';
+const replyRed = 'rgba(250, 200, 50, 0.2)';
+const replyBlue = 'rgba(250, 200, 50, 0.2)';
 const States = [
     [
       // State 0

@@ -148,12 +148,8 @@ class LessonNotes extends Component {
   }
   quiz(question,answers){
     let colors = [];
-    for(let i = 0; i<answers.length; i++) {
-      colors.push('rgb(250, 200, 50)');
-    }
     this.changeMainText(question);
     this.editState('panel','replies',answers);
-    setTimeout(() => this.editState('panel','replyColor',colors),50);
     setTimeout(() => this.repliesIn(), 1000);
   }
   repliesIn(){
