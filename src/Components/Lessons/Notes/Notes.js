@@ -60,7 +60,7 @@ class LessonNotes extends Component {
       reply: {animation: '', opacity: 1},
       object1: {opacity: 0, translate: ['-50px',0,0], display: false, size: [(window.innerWidth/3-60),130],width: '50%'},
       object2: {opacity: 1, translate: [0,0,0], display: false, transition: 'all 1s',width:'100%', liTransition: ''},
-      maintext: {opacity: 0, translate: [0,0,0], display: true, text: '', color: 'black', animation: ''},
+      maintext: {opacity: 0, translate: [0,0,0], display: true, text: '', color: '', animation: ''},
       pointer: {opacity: 0, translate: [0,0,0], color: 'black', size: '2x'},
       reset: [
         ['maintext','opacity',0],
@@ -87,7 +87,7 @@ class LessonNotes extends Component {
       notelist: [],
       hoverstate: 0,
       interactable: true,
-      progress: 29,
+      progress: 0,
       notes: null,
       noteOriginal: notes,
       states: States,
@@ -309,11 +309,11 @@ class LessonNotes extends Component {
     let textlist = [];
     for(let i = 0; i< this.state.notelist.length; i++) {
       if(this.state.iterator === i){
-        this.state.weights[i] = 600;
+        this.state.weights[i] = 'rgb(250, 200, 50)';
       } else {
-        this.state.weights[i] = 300;
+        this.state.weights[i] = null;
       }
-      textlist.push(<li key={'text'+i} style={{opacity: this.state.opacities[11-i], transition: this.state.object2.liTransition}}><p style={{fontWeight: this.state.weights[11-i],padding:0, margin:0}}>{this.state.notelist[i]}</p></li>);
+      textlist.push(<li key={'text'+i} style={{opacity: this.state.opacities[11-i], transition: this.state.object2.liTransition}}><p style={{color: this.state.weights[11-i],padding:0, margin:0}}>{this.state.notelist[i]}</p></li>);
     }
     let panelDisplay;
     if(!this.state.panel.text){
@@ -329,7 +329,9 @@ class LessonNotes extends Component {
     return(
       <div style={{opacity: this.props.opacity}} className="NotesContainer">
         { this.state.maintext.display &&
-          <h3 style={{opacity: this.state.maintext.opacity, color: this.state.maintext.color, animation: this.state.maintext.animation}} className="mainText">{this.state.maintext.text}</h3>
+          <div className="mainTextContainer" style={{opacity: this.state.maintext.opacity, animation: this.state.maintext.animation}}>
+            <h3 style={{color: this.state.maintext.color}} className="mainText">{this.state.maintext.text}</h3>
+          </div>
         }
         { this.state.object2.display &&
           <div>

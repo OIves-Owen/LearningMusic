@@ -5,7 +5,7 @@ class Tiles extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      opacity: this.props.opacity,
+      opacities: [],
       tiles: ["Notes","Clefs","Keys","Chords","Progressions","Modes","Substitutions","Complex Stuff","This Stuff'll Blow Your Mind","Placeholder","Placeholder","Placeholder"],
       tileActive: [],
       Progress: [0],
@@ -26,7 +26,7 @@ class Tiles extends Component {
     }),500);
   }
   ExitMenu(newName, key) {
-    if(this.state.tileActive[key] == null){
+    if(this.state.tileActive[key][0] == null){
       this.props.ExitMenu(newName);
     }
   }
@@ -38,11 +38,13 @@ class Tiles extends Component {
     let tiles = [];
     for(let i = 0; i < this.state.tiles.length; i++){
       if(this.state.Progress[0] < i){
-        this.state.tileActive[i] = "rgb(80,80,80)";
+        this.state.opacities[i] = 0.3;
+        this.state.tileActive[i] = ["rgb(80,80,80)","rgb(100,0,0)"];
       } else {
-        this.state.tileActive[i] = null;
+        this.state.tileActive[i] = '';
+        this.state.opacities[i] = 1;
       }
-      tiles.push(<Tile key={'Tile'+i} listId={i} opacity={this.props.opacity} ExitMenu={this.ExitMenu.bind(this)} title={this.state.tiles[i]} background={this.state.tileActive[i]}/>);
+      tiles.push(<Tile key={'Tile'+i} listId={i} opacity={this.state.opacities[i]} ExitMenu={this.ExitMenu.bind(this)} title={this.state.tiles[i]} background={this.state.tileActive[i]}/>);
     }
     return (
       <div className="Tiles">

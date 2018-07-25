@@ -20,7 +20,7 @@ class Title extends Component {
     return (
       <div className="TitleWhole">
         { this.props.ProgressBar ? (
-          <div className="progressOuter" style={this.props.opacity}>
+          <div className="progressOuter" style={{opacity: this.props.opacity, transition: 'all 1s'}}>
             <div className="innerPlaceholder"></div>
             <div className="progressInner" style={{width: this.props.progressPercent*98+'%'}}></div>
           </div>

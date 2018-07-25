@@ -5,7 +5,7 @@ export default class Tile extends Component {
   }
   render() {
     return (
-      <div style={{opacity: this.props.opacity, background: this.props.background, color: this.props.background}} onClick={this.ExitMenu.bind(this)} className="Tile"> {this.props.title} </div>
+      <div style={{opacity: this.props.opacity, background: this.props.background[0], color: this.props.background[1]}} onClick={this.ExitMenu.bind(this)} className="Tile"> {this.props.title} </div>
     );
   }
 }

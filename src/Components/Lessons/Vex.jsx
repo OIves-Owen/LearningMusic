@@ -45,7 +45,7 @@ export default class Music extends Component {
         let renderer = new Renderer(svgContainer, Renderer.Backends.SVG);
         renderer.resize(size[0],size[1]);
         let ctx = renderer.getContext();
-        let stave = new Stave(0, 0, size[0]);
+        let stave = new Stave(0, 0, size[0], {fill_style: 'black'});
         stave.addClef('treble');
         let notes = this.props.notes;
         console.log(notes);

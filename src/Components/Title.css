@@ -4,6 +4,9 @@
   flex-flow: row nowrap;
 }
 .title h1 {
+  font-family: 'neatCurves';
+  font-size: 40px;
+  color: white;
   flex: 3;
   transition: all 0.4s;
 }
@@ -19,9 +22,9 @@
   top:calc(50% - 16px);
 }
 .progressOuter {
-  margin: 5px auto;
-  margin-top: 10px;
-  margin-bottom: -10px;
+  margin: 0px auto;
+  position: relative;
+  top: 20px;
   width: 80vw;
   height: 14px;
   border-radius: 30px;
