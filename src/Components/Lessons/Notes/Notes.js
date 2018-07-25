@@ -53,6 +53,7 @@ class LessonNotes extends Component {
     this.childStave = React.createRef();
     this.editState = this.editState.bind(this);
     this.state = {
+      TotalProgress: this.props.TotalProgress,
       iterator: -1,
       auto: 0,
       panel: {opacity: 1, translate: [0,0,0], display: true, text: '', replies: [], replyOpacity: 0, replyColor: []},
@@ -86,11 +87,19 @@ class LessonNotes extends Component {
       notelist: [],
       hoverstate: 0,
       interactable: true,
-      progress: 20,
+      progress: 29,
       notes: null,
       noteOriginal: notes,
       states: States,
     }
+  }
+  updateJSON(){
+    if(this.state.TotalProgress[0] < this.props.listId) {
+      let newProgress = this.state.TotalProgress[0]+1;
+      let progress = [newProgress: "Progress", 0: "CurrentProgress"];
+      localStorage.setItem('save', JSON.stringify(progress));
+    }
+      this.props.EnterMenu();
   }
   reset(){
     let reset = this.state.reset;
@@ -194,7 +203,13 @@ class LessonNotes extends Component {
   // This atrocity takes the data from NotesStates.js and does a variety of stuff. Needs to sort the data better!
   handleClick(){
     console.log('current progress = ' + this.state.progress);
-    let current = this.state.states[this.state.progress];
+    let current;
+    if(this.state.states[this.state.progress]){
+      current = this.state.states[this.state.progress];
+    } else {
+      this.updateJSON();
+      return;
+    }
     if(this.state.auto > 0){
       this.setState({auto: this.state.auto - 1});
     }

@@ -8,6 +8,7 @@ class Title extends Component {
     }
   }
   render() {
+    console.log(this.props.ProgressBar);
     let up = 'translate(0px, '+this.props.offy+')';
     let left = 'translate('+this.props.offx+', 0px)';
     let hidel = {

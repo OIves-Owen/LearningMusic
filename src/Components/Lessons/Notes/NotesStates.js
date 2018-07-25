@@ -102,7 +102,7 @@ const States = [
     [
       //State 9
       ['sound-change','ChromRun1'],
-      ['maintext','Well yes there are just twelve...','black', 0],
+      ['maintext','Well yes kinda...','black', 0],
       ['state-i','object2','liTransition','all 1.5s'],
       ['state-d','object1','display',true,150],
       ['state-d','object2','width','50%',200],
@@ -246,14 +246,14 @@ const States = [
       ['sound-d',1500],
       ['autonext',1,5000],
     ],
-    [
+    [ // State 26
       ['quiz','What is the name of the horizontal lines upon which you place musical notes?',['Richard','The Stave','The Clef']],
       ['state-i','object2','display',true],
       ['state-i','object1','display',true],
       ['state-d','object2','opacity',1, 20],
       ['state-d','object1','opacity',1, 20],
     ],
-    [
+    [ // State 27
       ['sound-change','Wrong'],
       ['state-i','object1','opacity',0],
       ['maintext','As nice a name as Richard is, the real name of the lines is the Stave',1000],
@@ -261,21 +261,25 @@ const States = [
       ['maintext',"I'm sure it was just an honest mistake",'brown',5000],
       ['autonext',3,8000]
     ],
-    [
+    [ // State 28
       ['sound-change','Right'],
       ['state-i','object1','opacity',0],
       ['maintext','Yeah! ',1000],
       ['sound-d',1500],
-      ['maintext',"I'm sure it was just an honest mistake",'brown',5000],
-      ['autonext',3,8000]
+      ['autonext',2,5000]
     ],
-    [
+    [ // State 29
       ['sound-change','Wrong'],
       ['state-i','object1','opacity',0],
       ['maintext','Ooh nope, but very close!',1000],
       ['sound-d',1500],
       ['maintext',"The Stave is the name of the lines, and a Clef is something you put on the Stave",'green',5000],
-      ['autonext',3,8000]
+      ['autonext',1,8000]
+    ],
+    [
+      ['maintext','CONGRATULATIONS!',0],
+      ['maintext','SECTION COMPLETE',3000],
+      ['autonext',1,5000]
     ]
 ];
 export { States };

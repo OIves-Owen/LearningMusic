@@ -22,7 +22,7 @@ class Item1 extends Component {
   }
   EnterMenu() {
     this.setState({opacity: 0});
-    this.props.ExitMenu('Intuitive Music');
+    this.props.EnterMenu();
     setTimeout(function() {
       this.setState({value: 'Menu'})}.bind(this)
     , 800);
@@ -34,7 +34,7 @@ class Item1 extends Component {
     // Read whether the user is on the Menu or not, if not then send the lessonName to the lesson class and render it.
       return (
         <div>
-          {this.state.value === 'Menu' ? (<Tiles opacity={this.state.opacity} ExitMenu={this.ExitMenu.bind(this)}/>) : ( <Lessons updateProgress={this.props.updateProgress.bind(this)} opacity={this.state.opacity} lesson={this.state.value}/> )}
+          {this.state.value === 'Menu' ? (<Tiles opacity={this.state.opacity} Progress={this.props.Progress} ExitMenu={this.ExitMenu.bind(this)}/>) : ( <Lessons EnterMenu={this.EnterMenu.bind(this)} Progress={this.props.Progress} updateProgress={this.props.updateProgress.bind(this)} opacity={this.state.opacity} lesson={this.state.value}/> )}
         </div>
     );
   }
