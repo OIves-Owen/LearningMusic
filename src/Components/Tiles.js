@@ -34,7 +34,6 @@ class Tiles extends Component {
     this.props.EnterMenu(newName);
   }
   render() {
-    console.log(this.state.Progress[0]);
     let tiles = [];
     for(let i = 0; i < this.state.tiles.length; i++){
       if(this.state.Progress[0] < i){

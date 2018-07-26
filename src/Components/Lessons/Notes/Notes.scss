@@ -41,15 +41,19 @@ body {
   list-style: none;
   text-align: center;
   li {
+    font-family: 'Comfortaa';
     font-size: 20px;
     margin: 3px;
     color: white;
   }
 }
 #boo {
+  position:relative;
+  top:-100px;
   justify-content: center;
   svg {
-    margin-top:100px;
+    margin:0;
+    padding:0;
   }
 }
 .mainTextContainer {
@@ -83,14 +87,22 @@ body {
     flex: 1;
     display:inline-block;
     justify-content: center;
+    animation-fill-mode: both;
     transition: all 0.8s;
-    background: rgb(28, 182, 48);
-    border-radius: 20px;
-    box-shadow: 0px 0px 85px rgb(0,0,0);
+    background: rgba(250, 200, 50, 0);
+    border-radius: 4px;
+    box-shadow: 0px 0px 100px -20px rgb(0,0,0);
     text-align: center;
+  &:hover {
+    box-shadow: 0px 0px 100px 0px rgb(0,0,0);
+    cursor:pointer;
+    h2 {
+      color: rgba(250,200,50,1);
+    }
+  }
     h2 {
       color: white;
-      font-family: 'neatCurves';
+      font-family: 'Comfortaa';
       font-weight: bold;
       top: 36%;
       left: 50%;
@@ -107,8 +119,12 @@ body {
   position: relative;
 }
 @keyframes grow {
-  0% {transform: scale(0.5);}
-  100% {transform: scale(1);}
+  0% {transform: scale(0.5); opacity: 0;}
+  100% {transform: scale(1); opacity: 1;}
+}
+@keyframes hide {
+  0% {transform: scale(1); opacity: 1;}
+  100% {transform: scale(0.5); opacity: 0;}
 }
 @keyframes float {
   0%, 100%{transform: translateY(0px) rotateZ(2deg);}

@@ -2,6 +2,7 @@
   text-align: center;
   display: flex;
   flex-flow: row nowrap;
+  transition: all 0.6s;
 }
 .title h1 {
   font-family: 'neatCurves';
@@ -24,19 +25,20 @@
 .progressOuter {
   margin: 0px auto;
   position: relative;
-  top: 20px;
-  width: 80vw;
+  top: 30px;
+  width: 70vw;
   height: 14px;
   border-radius: 30px;
   background: rgb(230, 230, 230);
   box-shadow: 2px 2px 10px black;
+  transition: all 0.6s;
 }
 .innerPlaceholder {
   position:relative;
   left: 4px;
   top: 4px;
   border-radius: 30px;
-  width: calc(80vw - 8px);
+  width: calc(70vw - 8px);
   height: 6px;
   background: rgb(100, 100, 100);
 }
@@ -54,4 +56,22 @@
 }
 .TitleWhole {
   display: block;
+}
+.titleIconLeft {
+  color: white;
+  transition: all 0.4s;
+  position: absolute;
+  top: 20px;
+  left: 30px;
+}
+.titleIconRight {
+  color: white;
+  transition: all 0.4s;
+  position: absolute;
+  top: 32px;
+  right: 30px;
+}
+.titleIconLeft:hover {
+  color: rgb(250, 200, 50);
+  cursor: pointer;
 }

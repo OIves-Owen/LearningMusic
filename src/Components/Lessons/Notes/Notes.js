@@ -3,7 +3,11 @@ import ReactDOM from 'react-dom';
 import './Notes.min.css'
 import Vex from 'vexflow';
 import Music from '../Vex';
-import {States} from './NotesStates';
+import Maintext from '../Maintext.js';
+import ListObject from '../ListObject.js';
+import Stave from '../Stave.js';
+import Panel from '../Panel.js';
+import {States, notes} from './NotesStates';
 import Notes1 from '../../Audio/Notes 1.mp3';
 import Plonk1 from '../../Audio/Plonk1.mp3';
 import HighVoice1 from '../../Audio/HighVoice1.mp3';
@@ -17,40 +21,12 @@ import Right from '../../Audio/Right.mp3';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const {Accidental, StaveNote, Voice, TextNote} = Vex.Flow;
 const green = 'rgb(28, 182, 48)';
-const replyGreen = 'rgba(28,182,48,0.7)';
-const replyRed = 'rgba(182,28,48,0.7)';
-let notes = [
-  new StaveNote({clef: "treble", keys: ["a/3"], duration: "q"}),
-  new StaveNote({clef: "treble", keys: ["b/3"], duration: "q"}).addAccidental(0, new Accidental("b")),
-  new StaveNote({clef: "treble", keys: ["b/3"], duration: "q"}),
-  new StaveNote({clef: "treble", keys: ["c/4"], duration: "q"}),
-  new StaveNote({clef: "treble", keys: ["c/4"], duration: "q"}).addAccidental(0, new Accidental("#")),
-  new StaveNote({clef: "treble", keys: ["d/4"], duration: "q"}),
-  new StaveNote({clef: "treble", keys: ["e/4"], duration: "q"}).addAccidental(0, new Accidental("b")),
-  new StaveNote({clef: "treble", keys: ["e/4"], duration: "q"}),
-  new StaveNote({clef: "treble", keys: ["f/4"], duration: "q"}),
-  new StaveNote({clef: "treble", keys: ["f/4"], duration: "q"}).addAccidental(0, new Accidental("#")),
-  new StaveNote({clef: "treble", keys: ["g/4"], duration: "q"}),
-  new StaveNote({clef: "treble", keys: ["g/4"], duration: "q"}).addAccidental(0, new Accidental("#")),
-  new StaveNote({clef: "treble", keys: ["a/4"], duration: "q"}),
-  new StaveNote({clef: "treble", keys: ["a/4"], duration: "q"}).addAccidental(0, new Accidental("#")),
-  new StaveNote({clef: "treble", keys: ["b/4"], duration: "q"}),
-  new StaveNote({clef: "treble", keys: ["c/5"], duration: "q"}),
-  new StaveNote({clef: "treble", keys: ["d/5"], duration: "q"}).addAccidental(0, new Accidental("b")),
-  new StaveNote({clef: "treble", keys: ["d/5"], duration: "q"}),
-  new StaveNote({clef: "treble", keys: ["e/5"], duration: "q"}).addAccidental(0, new Accidental("b")),
-  new StaveNote({clef: "treble", keys: ["e/5"], duration: "q"}),
-  new StaveNote({clef: "treble", keys: ["f/5"], duration: "q"}),
-  new StaveNote({clef: "treble", keys: ["g/5"], duration: "q"}).addAccidental(0, new Accidental("b")),
-  new StaveNote({clef: "treble", keys: ["g/5"], duration: "q"}),
-  new StaveNote({clef: "treble", keys: ["a/5"], duration: "q"}).addAccidental(0, new Accidental("b")),
-  new StaveNote({clef: "treble", keys: ["a/5"], duration: "q"}),
-]
+
 class LessonNotes extends Component {
   constructor(props){
     super(props);
     this.sound = new Audio(Plonk1);
-    this.childStave = React.createRef();
+    //this.staveContainer = React.createRef();
     this.editState = this.editState.bind(this);
     this.state = {
       TotalProgress: this.props.TotalProgress,
@@ -58,16 +34,17 @@ class LessonNotes extends Component {
       auto: 0,
       panel: {opacity: 1, translate: [0,0,0], display: true, text: '', replies: [], replyOpacity: 0, replyColor: []},
       reply: {animation: '', opacity: 1},
-      object1: {opacity: 0, translate: ['-50px',0,0], display: false, size: [(window.innerWidth/3-60),130],width: '50%'},
-      object2: {opacity: 1, translate: [0,0,0], display: false, transition: 'all 1s',width:'100%', liTransition: ''},
+      object1: {opacity: 0, translate: ['-50px',0,0], display: false, size: [(window.innerWidth/3-60),130],width: '50vw'},
+      listObject: {opacity: 1, translate: [0,0,0], display: false, transition: 'all 1s',width:'50vw', liTransition: ''},
       maintext: {opacity: 0, translate: [0,0,0], display: true, text: '', color: '', animation: ''},
       pointer: {opacity: 0, translate: [0,0,0], color: 'black', size: '2x'},
+      content1: {transition: 'all 1s',display: true, translate: ['25vw',0,0]},
       reset: [
         ['maintext','opacity',0],
         ['object1','opacity',0],
-        ['object2','opacity',0],
+        ['listObject','opacity',0],
         ['pointer','opacity',0],
-        ['object2','translate',[0,0,0]],
+        ['listObject','translate',[0,0,0]],
         ['object1','translate',[0,0,0]],
       ],
       opacity: this.props.opacity,
@@ -108,12 +85,8 @@ class LessonNotes extends Component {
     }
   }
   // state: State object to be changed, par: Object's Paramater, value: Value to change it to;
-  editState(state,par,value){
-    let copy = {...this.state[state]};
-    copy[par] = value;
-    this.setState({[state]: copy});
-  }
   editState(state,par,value,callback){
+    console.log('editState');
     let copy = {...this.state[state]};
     copy[par] = value;
     this.setState({[state]: copy},callback);
@@ -130,7 +103,7 @@ class LessonNotes extends Component {
         setTimeout(() => {
           this.setState({iterator: i});
           this.setState({notes: [notes[total]]});
-          setTimeout( () => this.childStave.current.componentDidMount(), 10);
+          setTimeout( () => this.child.childStave.componentDidMount(), 10);
           total++;
         }, (delay*i) + (delay*max*j));
       }
@@ -139,7 +112,7 @@ class LessonNotes extends Component {
       setTimeout(() => {
         this.setState({iterator: x}, this.forceUpdate);
         this.setState({notes: [notes[total]]});
-        setTimeout( () => this.childStave.current.componentDidMount(), 10);
+        setTimeout( () => this.child.childStave.componentDidMount(), 10);
       }, (delay*(max-1)) + delay*(max*(reps-1))+((x+1)*delay));
     }
   }
@@ -149,12 +122,11 @@ class LessonNotes extends Component {
   quiz(question,answers){
     let colors = [];
     this.changeMainText(question);
-    this.editState('panel','replies',answers);
-    setTimeout(() => this.repliesIn(), 1000);
+    setTimeout(() => this.editState('panel','replies',answers),20);
+    this.editState('panel','animation','grow 0.8s ease 1s 1 both');
   }
   repliesIn(){
-    setTimeout(() => this.editState('panel','animation','grow ease 0.8s 1'), 20);
-    setTimeout(() => this.editState('panel','replyOpacity', 1), 50);
+    this.editState('panel','animation','grow ease 0.8s 1 both');
   }
   changeMainText(string, color){
     let addition = 0;
@@ -168,11 +140,9 @@ class LessonNotes extends Component {
   }
   //Triggered when user chooses a reply, simply plays the grow animation in reverse and removes replies
   reply(number){
+    this.editState('panel','animation','hide ease 1s 1 both');
     this.autoclick(number+1);
-    this.editState('panel','replyOpacity', 0);
-    setTimeout(() => this.editState('panel','animation','grow ease 0.8s 1 reverse'), 50);
-    setTimeout(() => this.editState('panel','replies',[]), 1000);
-    setTimeout(() => this.editState('panel','animation',''), 900);
+    setTimeout(() => this.editState('panel','replies',[]), 2000);
   }
   // A simple imitation of typing a string adds one character to the string every interval
   type(string,duration,delay){
@@ -265,19 +235,19 @@ class LessonNotes extends Component {
           break;
         case('note-i'):
           this.state.notes.push(new StaveNote({auto_stem: true, clef: "treble", keys:[current[i][2]] ,duration: 'q'}));
-          this.childStave.current.componentDidMount();
+          this.child.childStave.componentDidMount();
           break;
         case('note-d'):
           setTimeout( () => this.state.notes.push(new StaveNote({auto_stem: true, clef: "treble", keys: [current[i][2]], duration: "q"})), current[i][1]);
-          setTimeout( () => this.childStave.current.componentDidMount(), current[i][1]);
+          setTimeout( () => this.child.childStave.componentDidMount(), current[i][1]);
           break;
         case('note-clear'):
           this.setState({notes: null});
-          setTimeout( () => this.childStave.current.componentDidMount(), 10);
+          setTimeout( () => this.child.childStave.componentDidMount(), 10);
           break;
         case('note-test'):
           this.state.notes.push(new StaveNote({auto_stem: true, clef:"treble", keys:['c/4'], duration: 'q'}).addAccidental(0, new Accidental("##")));
-          this.childStave.current.componentDidMount();
+          this.child.childStave.componentDidMount();
           break;
         case('next'):
           this.next();
@@ -302,42 +272,25 @@ class LessonNotes extends Component {
 
   render(){
     //console.log(this.state.notes);
-    let textlist = [];
-    for(let i = 0; i< this.state.notelist.length; i++) {
-      if(this.state.iterator === i){
-        this.state.weights[i] = 'rgb(250, 200, 50)';
-      } else {
-        this.state.weights[i] = null;
-      }
-      textlist.push(<li key={'text'+i} style={{opacity: this.state.opacities[11-i], transition: this.state.object2.liTransition}}><p style={{color: this.state.weights[11-i],padding:0, margin:0}}>{this.state.notelist[i]}</p></li>);
-    }
-    let panelDisplay;
-    if(!this.state.panel.text){
-      panelDisplay = <FontAwesomeIcon icon="caret-square-right" size="4x"/>;
-    } else {
-      panelDisplay = <h3 style={{padding:0, margin:0,lineHeight: '64px', fontSize: '30px',
-        transition: 'all 0.5s'}}>{this.state.panel.text}</h3>;
-    }
-    let panel = [];
-    for(let i = 0; i < this.state.panel.replies.length; i++){
-      panel.push(<div style={{opacity: this.state.panel.replyOpacity, animation: this.state.panel.animation, animationDelay: '2s', background: this.state.panel.replyColor[i]}} key={'reply'+i} onClick={this.reply.bind(this,i)} className="reply"><h2>{this.state.panel.replies[i]}</h2></div>);
-    }
     return(
-      <div style={{opacity: this.props.opacity}} className="NotesContainer">
+      <div  style={{opacity: this.props.opacity}}
+            className="NotesContainer">
         { this.state.maintext.display &&
-          <div className="mainTextContainer" style={{opacity: this.state.maintext.opacity, animation: this.state.maintext.animation}}>
-            <h3 style={{color: this.state.maintext.color}} className="mainText">{this.state.maintext.text}</h3>
-          </div>
+          <Maintext maintext={this.state.maintext}/>
         }
-        { this.state.object2.display &&
+        { this.state.content1.display &&
           <div>
-            <div style={{transform: 'translate3d('+this.state.object2.translate+')', transition: 'all 1s', display: 'inline-block', padding: 0, margin:0, display: 'flex'}}>
-              <ul style={{transition: this.state.object2.transition, flex: 1, opacity: this.state.object2.opacity}} className="textContainer">
-                {textlist}
-              </ul>
-              <div id="boo" style={{opacity: this.state.object1.opacity, transition: 'all 0.4s', width: this.state.object1.width, transform: 'translate3d('+this.state.object1.translate+')'}}>
-                  {this.state.object1.display && <Music size={this.state.object1.size} ref={this.childStave} notes={this.state.notes} clef={"treble"}/>}
-              </div>
+            <div style={{transition: this.state.content1.transition, justifyContent: 'center', width: '100vw', transform: 'translate3d('+this.state.content1.translate+')'}}>
+
+              <ListObject iterator={this.state.iterator}
+                          opacities={this.state.opacities}
+                          listObject={this.state.listObject}
+                          notelist={this.state.notelist}
+                          weights={this.state.weights}/>
+
+              <Stave      object1={this.state.object1}
+                          notes={this.state.notes}
+                          ref={(node) => {this.child = node;}} />
             </div>
             <div className="pointerContainer" style={{opacity: this.state.pointer.opacity, transform: 'translate3d('+this.state.pointer.translate+')'}}>
               <FontAwesomeIcon icon="arrow-up" size={this.state.pointer.size} color={this.state.pointer.color}/>
@@ -345,9 +298,7 @@ class LessonNotes extends Component {
           </div>
         }
         { this.state.panel.display &&
-          <div className="NotesPanel" style={{opacity: this.state.panel.opacity}}>
-            {panel}
-          </div>
+          <Panel reply={this.reply.bind(this)} panel={this.state.panel} />
         }
       </div>
     );

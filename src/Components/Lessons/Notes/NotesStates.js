@@ -1,8 +1,32 @@
-const replyGreen = '#FF101F';
-//const replyRed = 'rgba(150,100,100,0.8)';
-//const replyBlue = 'rgba(100,100,150,0.8)';
-const replyRed = 'rgba(250, 200, 50, 0.2)';
-const replyBlue = 'rgba(250, 200, 50, 0.2)';
+import Vex from 'vexflow';
+const {Accidental, StaveNote, Voice, TextNote} = Vex.Flow;
+let notes = [
+  new StaveNote({clef: "treble", keys: ["a/3"], duration: "q"}),
+  new StaveNote({clef: "treble", keys: ["b/3"], duration: "q"}).addAccidental(0, new Accidental("b")),
+  new StaveNote({clef: "treble", keys: ["b/3"], duration: "q"}),
+  new StaveNote({clef: "treble", keys: ["c/4"], duration: "q"}),
+  new StaveNote({clef: "treble", keys: ["c/4"], duration: "q"}).addAccidental(0, new Accidental("#")),
+  new StaveNote({clef: "treble", keys: ["d/4"], duration: "q"}),
+  new StaveNote({clef: "treble", keys: ["e/4"], duration: "q"}).addAccidental(0, new Accidental("b")),
+  new StaveNote({clef: "treble", keys: ["e/4"], duration: "q"}),
+  new StaveNote({clef: "treble", keys: ["f/4"], duration: "q"}),
+  new StaveNote({clef: "treble", keys: ["f/4"], duration: "q"}).addAccidental(0, new Accidental("#")),
+  new StaveNote({clef: "treble", keys: ["g/4"], duration: "q"}),
+  new StaveNote({clef: "treble", keys: ["g/4"], duration: "q"}).addAccidental(0, new Accidental("#")),
+  new StaveNote({clef: "treble", keys: ["a/4"], duration: "q"}),
+  new StaveNote({clef: "treble", keys: ["a/4"], duration: "q"}).addAccidental(0, new Accidental("#")),
+  new StaveNote({clef: "treble", keys: ["b/4"], duration: "q"}),
+  new StaveNote({clef: "treble", keys: ["c/5"], duration: "q"}),
+  new StaveNote({clef: "treble", keys: ["d/5"], duration: "q"}).addAccidental(0, new Accidental("b")),
+  new StaveNote({clef: "treble", keys: ["d/5"], duration: "q"}),
+  new StaveNote({clef: "treble", keys: ["e/5"], duration: "q"}).addAccidental(0, new Accidental("b")),
+  new StaveNote({clef: "treble", keys: ["e/5"], duration: "q"}),
+  new StaveNote({clef: "treble", keys: ["f/5"], duration: "q"}),
+  new StaveNote({clef: "treble", keys: ["g/5"], duration: "q"}).addAccidental(0, new Accidental("b")),
+  new StaveNote({clef: "treble", keys: ["g/5"], duration: "q"}),
+  new StaveNote({clef: "treble", keys: ["a/5"], duration: "q"}).addAccidental(0, new Accidental("b")),
+  new StaveNote({clef: "treble", keys: ["a/5"], duration: "q"}),
+]
 const States = [
     [
       // State 0
@@ -17,7 +41,7 @@ const States = [
     [
       //State 2
       ['sound'],
-      ['state-i','object2','display',true],
+      ['state-i','listObject','display',true],
       ['setState','opacities',[1,0,1,1,0,1,0,1,1,0,1,0]],
       ['textpush','(G# / Ab)',0],
       ['textpush','G',5],
@@ -50,7 +74,6 @@ const States = [
     ],
     [
       //State 5
-      ['state-i','panel','replyColor',[replyBlue,replyRed]],
       ['state-d','panel','replies',["Wow!",'Just Twelve?!'],10],
       ['repliesIn'],
     ],
@@ -91,9 +114,7 @@ const States = [
       //State 8
       ['sound-change','ChromRun1'],
       ['maintext',"Well there's more where that came from...",'white',0],
-      ['state-i','object2','liTransition','all 1.5s'],
-      ['state-d','object2','width','50%',200],
-      ['state-d','object1','width','50%',200],
+      ['state-i','content1','translate',[0,0,0]],
       ['state-d','maintext','opacity',0,2000],
       ['state-d','maintext','text','every twelve notes you cycle over the note names like so...', 2600],
       ['state-d','maintext','opacity',1,2600],
@@ -105,10 +126,8 @@ const States = [
       //State 9
       ['sound-change','ChromRun1'],
       ['maintext','Well yes kinda...','white', 0],
-      ['state-i','object2','liTransition','all 1.5s'],
-      ['state-d','object1','display',true,150],
-      ['state-d','object2','width','50%',200],
-      ['state-d','object1','width','50%',200],
+      ['state-i','listObject','liTransition','all 1.5s'],
+      ['state-i','content1','translate',[0,0,0]],
       ['state-d','maintext','opacity',0,2000],
       ['state-d','maintext','text','..But! the note names are reused as you continue', 2600],
       ['state-d','maintext','opacity',1,2600],
@@ -119,13 +138,12 @@ const States = [
     [
       //State 10
       ['sound'],
-      ['state-i','object2','liTransition', 'all 0s'],
+      ['state-i','listObject','liTransition', 'all 0s'],
       ['startIterator',12,2,300,1],
       ['autonext',1,5000],
     ],
     [
       //State 11
-      ['state-i','panel','replyColor',[replyRed,replyBlue]],
       ['state-d','panel','replies',["What's that thing on the right?",'Got it!'], 10],
       ['repliesIn'],
     ],
@@ -156,11 +174,11 @@ const States = [
     [
       // State 14
       ['state-i','maintext','opacity',0],
-      ['state-i','object2','transition', 'all 1s'],
-      ['state-d','object2','opacity',0,1000],
-      ['state-d','object2','translate',['-25vw',0,0],1050],
+      ['state-i','listObject','transition', 'all 1s'],
+      ['state-d','listObject','opacity',0,1000],
+      ['state-d','content1','translate',['-25vw',0,0],1050],
       ['state-d','object1','translate',[0,0,0],1050],
-      ['state-d','object2','transition','',1800],
+      ['state-d','listObject','transition','',1800],
       ['state-d','object1','transition','',1800],
       ['note-clear'],
       ['autonext',1,3000],
@@ -178,11 +196,11 @@ const States = [
     [
       // State 16
       ['state-i','maintext','opacity',0],
-      ['state-i','object2','transition', 'all 1s'],
-      ['state-d','object2','opacity',0,1000],
-      ['state-d','object2','translate',['-25vw',0,0],1050],
+      ['state-i','listObject','transition', 'all 1s'],
+      ['state-d','listObject','opacity',0,1000],
+      ['state-d','content1','translate',['-25vw',0,0],1050],
       ['state-d','object1','translate',[0,0,0],1050],
-      ['state-d','object2','transition','',1800],
+      ['state-d','listObject','transition','',1800],
       ['state-d','object1','transition','',1800],
       ['note-clear'],
       ['autonext',1,3000],
@@ -223,23 +241,24 @@ const States = [
       ['maintext',"QUIZ TIME!",5000],
       ['sound-d',5600],
       ['autonext',1,9000],
-      ['state-i','object2','translate',['-25vw',0,0]],
+      ['state-i','content1','translate',['-25vw',0,0]],
     ],
     [ // State 22
       ['quiz','How many note names are there in Traditional Western Music?',['Thrifty-Five','Seventeen','Twelve']],
+      ['state-i','object1','translate',[0,0,0]],
     ],
     [ // State 23
       ['sound-change','Wrong'],
       ['maintext','Ah... Unfortunately thrifty-Five is neither the correct answer, nor a real number.',1000],
       ['sound-d',1500],
-      ['maintext',"I'm sure it was just an honest mistake",'brown',5000],
+      ['maintext',"I'm sure it was just an honest mistake",'white',5000],
       ['autonext',3,8000],
     ],
     [ // State 24
       ['sound-change','Wrong'],
       ['maintext','Oops! there are actually only twelve,',1000],
       ['sound-d',1500],
-      ['maintext',"I'm sure it was just an honest mistake",'brown',5000],
+      ['maintext',"I'm sure it was just an honest mistake",'white',5000],
       ['autonext',2,8000],
     ],
     [ // State 25
@@ -250,7 +269,6 @@ const States = [
     ],
     [ // State 26
       ['quiz','What is the name of the horizontal lines upon which you place musical notes?',['Richard','The Stave','The Clef']],
-      ['state-i','object2','display',true],
       ['state-i','object1','display',true],
       ['state-d','object1','opacity',1, 20],
     ],
@@ -259,7 +277,7 @@ const States = [
       ['state-i','object1','opacity',0],
       ['maintext','As nice a name as Richard is, the real name of the lines is the Stave',1000],
       ['sound-d',1500],
-      ['maintext',"I'm sure it was just an honest mistake",'brown',5000],
+      ['maintext',"I'm sure it was just an honest mistake",'white',5000],
       ['autonext',3,8000]
     ],
     [ // State 28
@@ -283,4 +301,4 @@ const States = [
       ['autonext',1,5000]
     ]
 ];
-export { States };
+export { States, notes };
